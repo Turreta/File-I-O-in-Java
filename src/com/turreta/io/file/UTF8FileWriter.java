@@ -1,7 +1,3 @@
-package com.turreta.io.file;
-
-import java.io.BufferedReader;
-import java.io.File;
 /*
  * Copyright (C) 2014 www.turreta.com
  *
@@ -18,39 +14,39 @@ import java.io.File;
  * limitations under the License.
  */
 
-import java.io.FileInputStream;
+package com.turreta.io.file;
+import java.io.BufferedWriter;
+import java.io.File;
+
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 public class UTF8FileWriter {
 
-	public static String write(File file){
-		 
+	public void write(File file, String text) throws IOException{
+		Writer out = null;
 		try {
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-	                      new FileInputStream(new File("C:/Users/ksangabr/workspace/turreta - algorithms/bin/jp_data20140101040311.dat")), "UTF8"));
-	 
-			String str;
-	 
-			while ((str = in.readLine()) != null) {
-			    System.out.println(str);
-			}
-	 
-	                in.close();
-		    } 
-		    catch (UnsupportedEncodingException e) 
-		    {
-				System.out.println(e.getMessage());
-		    } 
-		    catch (IOException e) 
-		    {
-				System.out.println(e.getMessage());
-		    }
-		    catch (Exception e)
-		    {
-				System.out.println(e.getMessage());
-		    }
-		return "";
+			out = new BufferedWriter(new OutputStreamWriter(
+			new FileOutputStream(file), "UTF8"));
+			out.append(text);
+		 }
+		 finally {
+				out.flush();
+				out.close();
+		 }	    
+	}
+	
+	public static void main(String... args) {
+		String stringToWrite = "すべての人間の知恵は、これらの2つの単語に含まれている - 待って、ホープ";
+		File file = new File("the_count_of_monte_cristo.txt");
+		UTF8FileWriter utf8Writer = new UTF8FileWriter();
+		
+		try {
+			utf8Writer.write(file, stringToWrite);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
